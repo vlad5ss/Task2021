@@ -1,8 +1,12 @@
 package com.company;
-
-import java.util.ArrayList;
+/*
+5.Дана скобочная последовательность: [((())()(())]]
+        - Можно ли считать эту последовательность правильной?
+        - Если ответ на предыдущий вопрос “нет” - то что необходимо в ней изменить, чтоб она стала правильной?
+ */
 
 public class Task4 {
+
     public static void main(String[] args) {
 
         String one = "(({{[[";					//false
@@ -15,40 +19,31 @@ public class Task4 {
 
         for(String test : tests) {
 
-            boolean isit = balanced(test);
+            boolean isit = isBalanced(test);
             System.out.println(isit);
 
         }
     }
 
-    private static boolean balanced(String str) {
+    private static boolean isBalanced(String str) {
+        if (null == str || ((str.length() % 2) != 0)) {
+            return false;
+        } else {
+            char[] charArray = str.toCharArray();
+            for (char c : charArray) {
+                if (!(c == '{' || c == '[' || c == '(' || c == '}' || c == ']' || c == ')')) {
+                    return false;
+                }
 
-        ArrayList<Character> array = new ArrayList<>();
-
-        for(int i = 0; i < str.length(); i++ ) {
-
-            switch(str.charAt(i)) {
-
-                case '[': array.add('['); break;
-                case ']': if(!array.isEmpty() && array.get(array.size()-1) == '[') {
-                    array.remove(array.size()-1);
-                }else return false;
-                    break;
-
-                case '(': array.add('('); break;
-                case ')': if(!array.isEmpty() && array.get(array.size()-1) == '(') {
-                    array.remove(array.size()-1);
-                }else return false;
-                    break;
-
-                case '{': array.add('{'); break;
-                case '}': if(!array.isEmpty() && array.get(array.size()-1) == '{') {
-                    array.remove(array.size()-1);
-                }else return false;
-                    break;
             }
         }
 
-        return (array.isEmpty())?  true:false;
+        while (str.contains("()") || str.contains("[]") || str.contains("{}")) {
+            str = str.replaceAll("\\(\\)", "")
+                    .replaceAll("\\[\\]", "")
+                    .replaceAll("\\{\\}", "");
+        }
+        return (str.length() == 0);
+
     }
 }
